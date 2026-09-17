@@ -17,6 +17,14 @@ import {
   Lock,
 } from 'lucide-react';
 
+interface WebhookDeliveryResponse {
+  status: number;
+  statusText: string;
+  deliveredAt: string;
+  headers: Record<string, string>;
+  payload: Record<string, unknown>;
+}
+
 export default function DevelopersPage() {
   const [lang, setLang] = useState<'node' | 'python' | 'curl' | 'go'>('node');
   const [copied, setCopied] = useState(false);
@@ -24,7 +32,7 @@ export default function DevelopersPage() {
   // Webhook Simulator state
   const [webhookEvent, setWebhookEvent] = useState<'verification.approved' | 'verification.rejected' | 'videokyc.escalated'>('verification.approved');
   const [isSending, setIsSending] = useState(false);
-  const [webhookResponse, setWebhookResponse] = useState<any | null>(null);
+  const [webhookResponse, setWebhookResponse] = useState<WebhookDeliveryResponse | null>(null);
 
   const copyCode = () => {
     setCopied(true);
@@ -190,7 +198,7 @@ func main() {
                 <label className="text-slate-700 font-semibold">Select Event Type</label>
                 <select
                   value={webhookEvent}
-                  onChange={(e) => setWebhookEvent(e.target.value as any)}
+                  onChange={(e) => setWebhookEvent(e.target.value as 'verification.approved' | 'verification.rejected' | 'videokyc.escalated')}
                   className="w-full p-2.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 focus:outline-none focus:border-indigo-500"
                 >
                   <option value="verification.approved">verification.approved (Instant Pass)</option>

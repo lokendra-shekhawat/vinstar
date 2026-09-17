@@ -166,7 +166,7 @@ export function generateVerificationHash(id: string): string {
 export function playChime(type: 'success' | 'action' | 'alert') {
   if (typeof window === 'undefined') return;
   try {
-    const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
+    const AudioContextClass = window.AudioContext || (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
     if (!AudioContextClass) return;
     const ctx = new AudioContextClass();
     const osc = ctx.createOscillator();
@@ -200,7 +200,7 @@ export function playChime(type: 'success' | 'action' | 'alert') {
       osc.start();
       osc.stop(ctx.currentTime + 0.4);
     }
-  } catch (e) {
+  } catch {
     // Graceful silent fallback if browser audio context blocked
   }
 }
@@ -216,7 +216,7 @@ export function speakAgentVoice(text: string) {
     utterance.rate = 1.0;
     utterance.pitch = 1.05;
     window.speechSynthesis.speak(utterance);
-  } catch (e) {
+  } catch {
     // Fallback if speech synthesis is disabled
   }
 }
